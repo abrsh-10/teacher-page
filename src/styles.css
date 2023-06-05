@@ -1,1 +1,31 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+/* body {
+    background-image: url("assets/images/background-image.png");  
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    background-attachment: fixed;
+} */
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: url("assets/images/cool-background.png");
+}
+
+.btn {
+    border: 1px solid;
+    margin-bottom: 5px;
+    background-color: #1DA1F2;
+    color: white;
+}
+
+.btn:hover {
+    background-color: white;
+    color: #1DA1F2;
+}

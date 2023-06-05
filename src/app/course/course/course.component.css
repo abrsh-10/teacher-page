@@ -1,0 +1,167 @@
+.full-container{
+}
+.navbar{
+    padding: 0px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
+}
+.brand{
+    display: flex;
+    place-items: center;
+    justify-content: space-between;
+    margin-left: -11px;
+    text-decoration: none;
+    color: black;
+}
+.home-logo{
+    width: 80px;
+    height: 80px;
+    display: flex;
+    place-items: center;
+    justify-content: center;
+    background-color: rgb(234, 231, 231);
+    color: #1DA1F2;
+    text-decoration: none;
+}
+.brand>h2{
+   margin-left: 10%;
+}
+.home-logo:hover , .hide-button:hover{
+    background-color: rgb(199, 198, 198);
+    cursor: pointer;
+}
+.right-side {
+    display: flex;
+    margin-right: 5px;
+}
+
+.aau-logo {
+    width: 70px;
+    height: 70px;
+    margin-right: 10px;
+}
+
+.slogan {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    font-size: xx-large;
+    font-family: "Proxima Nova",sans-serif;
+}
+.main>span{
+    font-weight: 600;
+}
+.course-name{
+    color: #1DA1F2;
+}
+.side-bar{
+    padding: 0px;
+    background-color: white;
+    margin-right: auto;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19);
+}
+.hide-button{
+        width: 130px;
+        height: 60px;
+        display: flex;
+        place-items: center;
+        justify-content: center;
+        background-color: rgb(234, 231, 231);
+        text-decoration: none;
+        margin-left: auto;
+}
+.side-bar-container{
+    position: relative;
+}
+.side-bar-items{
+    background-color: #1DA1F2;
+    color: white;
+    display: flex;
+    place-items: center;
+    justify-content: left;
+    font-family: "Proxima Nova",sans-serif;
+    font-size: larger;
+    height: 50px;
+    margin-bottom: 1.5px;
+    padding-left: 15px;
+    cursor: pointer;
+}
+.side-bar-item-clicked{
+            background-color: #055688;
+            color: white;
+            display: flex;
+            place-items: center;
+            justify-content: left;
+            font-family: "Proxima Nova", sans-serif;
+            font-size: larger;
+            height: 50px;
+            margin-bottom: 1.5px;
+            padding-left: 15px;
+            cursor: pointer;
+}
+.side-bar-sub-items{
+        background-color: #89cdf8;
+        color: white;
+        display: flex;
+        place-items: center;
+        justify-content: left;
+        font-family: "Proxima Nova", sans-serif;
+        font-size: large;
+        height: 35px;
+        margin-bottom: 1.5px;
+        margin-left: auto;
+        padding-left: 35px;
+        cursor: pointer;
+}
+.showSideBar-Icon{
+    background-color: #1DA1F2;
+    margin-top: 20px;
+    margin-right: auto;
+    width:50px;
+    height: 50px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+}
+.main-content{
+    background-color: white;
+    color: black;
+    height: 100vh;
+    margin-top: 20px;
+    margin-right: auto;
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.truncate {
+    max-width: 500px;
+}
+.courseMaterial-description{
+margin-right: 5px;
+}
+.card-body{
+    overflow: auto;
+}
+.next-btn{
+    margin-left: auto;
+    margin-right: 10px;
+}
+.youtube{
+    display: flex;
+    flex-direction: column;
+}
+.uploadButton{
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.uploadButton button{
+    border: 1px solid;
+    margin-bottom: 5px;
+        background-color: #1DA1F2;
+            color: white;
+}
+.uploadButton button:hover{
+    background-color: white;
+        color: #1DA1F2;
+}

@@ -17,6 +17,7 @@ import { AssignmentSolution } from 'src/app/models/assignment-solution';
 import { PopupComponent, PopupData } from 'src/app/popup/popup.component';
 import { Assignments } from 'src/app/models/assignments';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CourseMaterial } from 'src/app/models/course-material';
 
 @Component({
   selector: 'app-course',
@@ -53,6 +54,9 @@ export class CourseComponent implements OnInit {
   questionsPerPage = 4;
 
   videoId?: string;
+
+  topic_title?: string;
+  topic_description?: string;
 
   constructor(
     private router: Router,
@@ -112,6 +116,7 @@ export class CourseComponent implements OnInit {
       });
     } else if (position == 3) {
       this.showCourseMaterial = false;
+      this.showTopic = false;
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = false;
@@ -334,5 +339,78 @@ export class CourseComponent implements OnInit {
     let snack = this.snackBar.open(content, action);
     snack.afterDismissed().subscribe(() => {});
     snack.onAction().subscribe(() => {});
+  }
+  uploadCourseMaterial() {
+    const data: FormData = {
+      title: 'Upload Solution Form',
+      courseId: this.courseId,
+      type: 0,
+      fileIncluded: true,
+      positiveButton: 'Upload',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.courseMaterialService.postCourseMaterial(result).subscribe(
+          (result) => {
+            this.showSnackbarAction('course material successfully added', 'OK');
+            this.showCourseMaterial = false;
+          },
+          (error) => {
+            this.showSnackbarAction('unable to add new course material', 'OK');
+          }
+        );
+      } else {
+        return;
+      }
+    });
+  }
+  deleteCourseMaterial(courseMaterial: CourseMaterial) {
+    const data: PopupData = {
+      title: 'Delete Course Material',
+      content: ['Are you sure to delete the course material'],
+      positiveButton: 'Yes',
+      negativeButton: 'No',
+    };
+    const dialogRef = this.dialog.open(PopupComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.courseMaterialService
+          .deleteCourseMaterial(courseMaterial.courseMaterialId!)
+          .subscribe();
+        this.showSnackbarAction('course material is deleted', 'OK');
+        this.showCourseMaterial = false;
+      } else {
+        return;
+      }
+    });
+  }
+  addTopic() {
+    const topic = new Topic();
+    topic.courseId = this.courseId;
+    topic.topicTitle = this.topic_title!;
+    topic.topicDescription = this.topic_description!;
+    this.topicService.addTopic(topic).subscribe();
+    this.showTopic = false;
+  }
+  newTitle?: string;
+  editedTopicForTitle?: string;
+  editTopicName() {
+    this.topicService
+      .editTopicName(this.newTitle!, this.editedTopicForTitle!)
+      .subscribe();
+    this.showTopic = false;
+  }
+  newDescription?: string;
+  editedTopicForDescription?: string;
+  editTopicDescription() {
+    this.topicService
+      .editTopicDescription(
+        this.newDescription!,
+        this.editedTopicForDescription!
+      )
+      .subscribe();
+    this.showTopic = false;
   }
 }

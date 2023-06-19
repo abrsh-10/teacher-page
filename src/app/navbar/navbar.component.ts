@@ -12,6 +12,6 @@ export class NavbarComponent implements OnInit {
   ngOnInit() {}
   logout() {
     sessionStorage.removeItem('email');
-    window.location.href = 'http://localhost:4200/home';
+    window.location.href = 'http://localhost:4201/home';
   }
 }

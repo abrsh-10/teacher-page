@@ -21,6 +21,7 @@ import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './error/error.component';
 import { FaqComponent } from './faq/faq.component';
 import { FormsModule } from '@angular/forms';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { FormsModule } from '@angular/forms';
     HomeComponent,
     ErrorComponent,
     FaqComponent,
+    AboutUsComponent,
   ],
 
   imports: [

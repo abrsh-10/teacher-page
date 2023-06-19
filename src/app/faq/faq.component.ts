@@ -81,6 +81,6 @@ export class FaqComponent implements OnInit {
     });
   }
   goToHome() {
-    window.location.href = 'http://localhost:4200/home';
+    window.location.href = 'http://localhost:4201/home';
   }
 }

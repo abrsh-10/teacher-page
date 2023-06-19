@@ -17,9 +17,9 @@ export class CourseService extends DataService<Course> {
   protected getUrl(): string {
     return environment.courseApiUrl;
   }
-  getCourses(id: String[]): Observable<Course[]> {
-    const url = `${this.getUrl()}/id`;
-    return this.fetchData(url, id);
+  getCourses(email: string): Observable<Course[]> {
+    const url = `${this.getUrl()}/teacher`;
+    return this.search(url, email);
   }
   getCourse(id: string): Observable<Course> {
     const url = `${this.getUrl()}/id`;

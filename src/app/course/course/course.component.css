@@ -138,6 +138,22 @@
 .courseMaterial-description{
 margin-right: 5px;
 }
+.delete-button{
+    background-color: #ff0909;
+    color: white;
+}
+.delete-button:hover{
+    background-color: white;
+    color: #ff0909;
+}
+.topic-form{
+    margin-top: 20px;
+    display: grid;
+    place-items: center;
+}
+#title,#description{
+    width: 50%;
+}
 .card-body{
     overflow: auto;
 }

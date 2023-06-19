@@ -17,6 +17,10 @@ export class DataService<T> {
     const apiUrl = `${url}/${id}`;
     return this.http.get<T>(apiUrl);
   }
+  search(url: string, id: string): Observable<T[]> {
+    const apiUrl = `${url}/${id}`;
+    return this.http.get<T[]>(apiUrl);
+  }
   fetchData(apiUrl: String, ids: String[]): Observable<any[]> {
     const requests = [];
 
@@ -31,7 +35,7 @@ export class DataService<T> {
     return this.http.post<T>(url, item);
   }
 
-  update(url: string, id: String, item: T): Observable<T> {
+  update(url: string, id: String, item: any): Observable<T> {
     const apiUrl = `${url}/${id}`;
     return this.http.put<T>(apiUrl, item);
   }

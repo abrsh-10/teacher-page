@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { Course } from 'src/app/models/course';
 
 @Component({
   selector: 'app-courses',
@@ -20,10 +21,8 @@ export class CoursesComponent implements OnInit {
 
   ngOnInit() {
     this.email = sessionStorage.getItem('email');
-    this.userService.getByEmail(this.email).subscribe((data) => {
-      this.courseService.getCourses(data.courses!).subscribe((courses) => {
-        this.courses = courses;
-      });
+    this.courseService.getCourses(this.email).subscribe((courses) => {
+      this.courses = courses;
     });
   }
 

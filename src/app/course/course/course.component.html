@@ -87,9 +87,17 @@
       <div class="main-content col-lg-8 col-md-12" style="overflow: auto">
         <section *ngIf="showCourseMaterial">
           <div class="row">
-            <div class="col-12 mt-3 mb-1">
+            <div class="col-10 mt-3 mb-1">
               <h5 class="text-uppercase">Course Materials</h5>
               <p>your course materials for this course are listed below</p>
+            </div>
+            <div class="col-2">
+              <button
+                class="btn align-items-bottom mt-3"
+                (click)="uploadCourseMaterial()"
+              >
+                Add new course material
+              </button>
             </div>
           </div>
           <div class="row">
@@ -130,11 +138,9 @@
                         </p>
                       </div>
                     </div>
-                    <div
-                      class="align-self-center me-1 d-flex flex-direction-column"
-                    >
+                    <div class="align-self-center d-flex flex-column me-1">
                       <button
-                        class="btn btn-outline-dark mb-0"
+                        class="btn btn-sm"
                         (click)="
                           downloadFile(
                             courseMaterial.courseMaterialId,
@@ -144,9 +150,148 @@
                       >
                         download
                       </button>
+                      <button
+                        class="btn btn-sm delete-button"
+                        (click)="deleteCourseMaterial(courseMaterial)"
+                      >
+                        delete
+                      </button>
                     </div>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section *ngIf="showTopic">
+          <div class="row topic-form">
+            <div class="col-sm-10 border mb-5">
+              <form #myForm="ngForm">
+                <div><h3 class="text-center">Add new topic</h3></div>
+                <div class="form-control mb-2">
+                  <div>
+                    <label><b>topic-title</b></label>
+                  </div>
+                  <input
+                    name="title"
+                    [(ngModel)]="topic_title"
+                    id="title"
+                    placeholder="Add title"
+                    required
+                  />
+                </div>
+                <div class="form-control col-6">
+                  <div class="mb-2">
+                    <label><b>topic-description</b></label>
+                  </div>
+                  <input
+                    name="description"
+                    [(ngModel)]="topic_description"
+                    id="description"
+                    placeholder="Add description"
+                    required
+                  />
+                </div>
+                <div style="display: grid; place-items: center" class="mt-1">
+                  <button
+                    class="btn submit ml-4"
+                    type="submit"
+                    [disabled]="!myForm.valid"
+                    (click)="addTopic()"
+                  >
+                    add
+                  </button>
+                </div>
+              </form>
+            </div>
+            <div class="row justify-content-between">
+              <div class="col-lg-5 col-sm-12 border mt-3 mb-3">
+                <form #myForm1="ngForm">
+                  <div><h3 class="text-center">edit topic title</h3></div>
+                  <div class="form-control mb-2">
+                    <div>
+                      <label><b>topic title</b></label>
+                    </div>
+                    <input
+                      name="title"
+                      [(ngModel)]="newTitle"
+                      id="title"
+                      placeholder="Add new title"
+                      required
+                    />
+                  </div>
+                  <div class="form-control col-6">
+                    <select
+                      name="topic"
+                      id="topic"
+                      class="topic"
+                      [(ngModel)]="editedTopicForTitle"
+                      required
+                    >
+                      <option value="">-- Select a topic --</option>
+                      <option
+                        *ngFor="let topic of topics"
+                        [value]="topic.topicId"
+                      >
+                        {{ topic.topicTitle }}
+                      </option>
+                    </select>
+                  </div>
+                  <div style="display: grid; place-items: center" class="mt-1">
+                    <button
+                      class="btn submit ml-4"
+                      type="submit"
+                      [disabled]="!myForm1.valid"
+                      (click)="editTopicName()"
+                    >
+                      edit title
+                    </button>
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg-5 col-sm-12 border my-3 mt-3">
+                <form #myForm2="ngForm">
+                  <div><h3 class="text-center">edit topic description</h3></div>
+                  <div class="form-control mb-2">
+                    <div>
+                      <label><b>topic description</b></label>
+                    </div>
+                    <input
+                      name="description"
+                      [(ngModel)]="newDescription"
+                      id="description"
+                      placeholder="Add new description"
+                      required
+                    />
+                  </div>
+                  <div class="form-control col-6">
+                    <select
+                      name="topic"
+                      id="topic"
+                      class="topic"
+                      [(ngModel)]="editedTopicForDescription"
+                      required
+                    >
+                      <option value="">-- Select a topic --</option>
+                      <option
+                        *ngFor="let topic of topics"
+                        [value]="topic.topicId"
+                      >
+                        {{ topic.topicTitle }}
+                      </option>
+                    </select>
+                  </div>
+                  <div style="display: grid; place-items: center" class="mt-1">
+                    <button
+                      class="btn submit ml-4"
+                      type="submit"
+                      [disabled]="!myForm2.valid"
+                      (click)="editTopicDescription()"
+                    >
+                      edit title
+                    </button>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

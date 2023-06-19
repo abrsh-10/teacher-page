@@ -1,5 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
 /* body {
     background-image: url("assets/images/background-image.png");  
     background-repeat: no-repeat;
@@ -15,7 +14,6 @@ body {
 body {
     margin: 0;
     font-family: Roboto, "Helvetica Neue", sans-serif;
-    background: url("assets/images/cool-background.png");
 }
 
 .btn {

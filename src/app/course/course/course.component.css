@@ -154,6 +154,12 @@ margin-right: 5px;
 #title,#description{
     width: 50%;
 }
+.delete-topic-icon{
+    color: #ff0909;
+    margin-left: auto;
+    margin-right: 5px;
+    font-size: 20px;
+}
 .card-body{
     overflow: auto;
 }

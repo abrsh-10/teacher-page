@@ -12,6 +12,8 @@ import { ExamComponent } from './exam/exam.component';
 import { VideoComponent } from './video/video.component';
 import { FormComponent } from './form/form.component';
 import { FooterComponent } from '../footer/footer.component';
+import { ExamSolutionComponent } from './exam-solution/exam-solution.component';
+import { AssignmentSolutionComponent } from './assignment-solution/assignment-solution.component';
 @NgModule({
   declarations: [
     CoursesComponent,
@@ -21,6 +23,8 @@ import { FooterComponent } from '../footer/footer.component';
     ExamComponent,
     VideoComponent,
     FormComponent,
+    ExamSolutionComponent,
+    AssignmentSolutionComponent,
   ],
   imports: [
     CommonModule,

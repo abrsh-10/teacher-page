@@ -3,32 +3,26 @@
     padding-top: 7px;
     padding-bottom: 7px;
 }
-.timer {
-    position: sticky;
-    margin-left: auto;
-    display: flex;
-    flex-direction: column;
-    border: 1px solid;
-    border-radius: 5px;
-    padding: 7px;
-    background-color: #1DA1F2;
-    color: #d9a74a;
-}
 
 .table-bordered.rounded {
     border-radius: 10px;
 }
+.remove-btn {
+    background-color: #ff0909;
+    color: white;
+    align-self: center;
+}
 
-.table td,
-.table th {
-    text-align: center;
-    color: #d9a74a;
-    letter-spacing: 2px;
-    font-weight: 100;
+.remove-btn:hover {
+    background-color: white;
+    color: #ff0909;
 }
 .question{
     border: 1px solid;
     border-radius: 5px;
+}
+#question{
+    width: 100%;
 }
 .btn-next-page{
    margin-left: auto;

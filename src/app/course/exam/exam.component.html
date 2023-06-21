@@ -1,83 +1,45 @@
 <div>
-  <button
-    class="btn btn-sm btn-outline-primary"
-    (click)="enterFullScreen(contentDiv)"
-  >
-    Full screen
-  </button>
-  <div class="container" id="fullscreen">
-    <div class="timer col-md-4 col-12">
-      <div class="h5 text-center">Time remaining</div>
-      <table class="table">
-        <thead class="thead">
-          <tr>
-            <th scope="col">Hours</th>
-            <th scope="col">Minutes</th>
-            <th scope="col">Seconds</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <cd-timer
-                [countdown]="true"
-                [startTime]="examDuration!"
-                format="user"
-                (onComplete)="onTimerComplete()"
-                >[hours]</cd-timer
-              >
-            </td>
-            <td>
-              <cd-timer
-                [countdown]="true"
-                [startTime]="examDuration!"
-                format="user"
-                (onComplete)="onTimerComplete()"
-                >[minutes]</cd-timer
-              >
-            </td>
-            <td>
-              <cd-timer
-                [countdown]="true"
-                [startTime]="examDuration!"
-                format="user"
-                (onComplete)="onTimerComplete()"
-                >[seconds]</cd-timer
-              >
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div class="container">
     <div *ngIf="currentPage == 1">
       <h4>True or false questions</h4>
-      <div *ngFor="let question of questions; let i = index">
+      <div *ngFor="let question of questions">
         <ng-container *ngIf="question.questionType === 'True_False'">
           <!-- Render a true/false question -->
-          <div class="question p-2 m-4">
-            <h5>{{ i + 1 + ". " + question.question }}</h5>
-            <div class="form-check" *ngFor="let choice of question.options">
-              <input
-                class="form-check-input"
-                type="radio"
-                [name]="question.questionNumber"
-                [value]="choice"
-                (change)="
-                  saveAnswer(
-                    question.questionType,
-                    question.questionNumber,
-                    choice
-                  )
-                "
-              />
-              <label class="form-check-label" for="{{ choice }}">
-                {{ choice }}
-              </label>
-            </div>
+          <div class="question p-2 m-4 d-flex justify-content-between">
+            <h5>{{ question.questionNumber + ". " + question.question }}</h5>
+            <button
+              class="btn btn-sm remove-btn"
+              (click)="
+                removeQuestion(question.questionType, question.questionNumber)
+              "
+            >
+              remove
+            </button>
           </div>
         </ng-container>
       </div>
-      <div class="d-flex justify-content-end m-3">
+      <div class="question p-2 m-4">
+        <form #myForm="ngForm">
+          <div class="mb-2">
+            <label><b>Question</b></label>
+          </div>
+          <textarea
+            name="question"
+            [(ngModel)]="trueFalseQuestion"
+            id="question"
+            placeholder="Add question"
+            required
+          ></textarea>
+          <button
+            class="btn btn-sm d-block"
+            (click)="addQuestion(1)"
+            [disabled]="!myForm.valid"
+          >
+            add
+          </button>
+        </form>
+      </div>
+      <div class="d-flex justify-content-end">
         <button type="button" class="btn btn-primary" (click)="nextPage()">
           > Next Page
         </button>
@@ -87,41 +49,111 @@
       <h4>Multiple choice questions</h4>
       <div *ngFor="let question of questions; let i = index">
         <ng-container *ngIf="question.questionType === 'Choose'">
-          <!-- Render a true/false question -->
-          <div class="question p-2 m-4">
-            <h5>{{ i + 1 + ". " + question.question }}</h5>
-            <div
-              class="form-check"
-              *ngFor="let choice of question.options; let i = index"
-            >
-              <input
-                class="form-check-input"
-                type="radio"
-                [name]="question.questionNumber"
-                [value]="choice"
-                id="{{ question.questionNumber }}-{{ i }}"
-                (change)="
-                  saveAnswer(
-                    question.questionType,
-                    question.questionNumber,
-                    getLetter(i) + '. ' + choice
-                  )
-                "
-              />
-              <label
-                class="form-check-label"
-                for="{{ question.questionNumber }}-{{ i }}"
+          <!-- Render a choose question -->
+          <div class="question p-2 m-4 d-flex justify-content-between">
+            <div>
+              <h5>{{ question.questionNumber + ". " + question.question }}</h5>
+              <div
+                class="form-check"
+                *ngFor="let choice of question.options; let i = index"
               >
-                {{ getLetter(i) }}. {{ choice }}
-              </label>
+                <label
+                  class="form-check-label"
+                  for="{{ question.questionNumber }}-{{ i }}"
+                >
+                  {{ getLetter(i) }}. {{ choice }}
+                </label>
+              </div>
             </div>
+
+            <button
+              class="btn btn-sm remove-btn"
+              (click)="
+                removeQuestion(question.questionType, question.questionNumber)
+              "
+            >
+              remove
+            </button>
           </div>
         </ng-container>
       </div>
-      <div class="d-flex justify-content-end m-3">
-        <button type="button" class="btn btn-primary" (click)="nextPage()">
-          > Next Page
-        </button>
+      <div class="question p-2 m-4">
+        <form #myForm="ngForm">
+          <div class="mb-2">
+            <label><b>Question</b></label>
+          </div>
+          <textarea
+            name="question"
+            [(ngModel)]="chooseQuestion"
+            id="question"
+            placeholder="Add question"
+            required
+          ></textarea>
+          <div class="mb-2">
+            <label><b>options</b></label>
+          </div>
+          <div>
+            <label>option 1</label>
+            <textarea
+              name="option1"
+              [(ngModel)]="options![0]"
+              id="question"
+              placeholder="Add option for A"
+              required
+            ></textarea>
+          </div>
+          <div>
+            <label>option 2</label>
+            <textarea
+              name="option1"
+              [(ngModel)]="options![1]"
+              id="question"
+              placeholder="Add option for B"
+              required
+            ></textarea>
+          </div>
+          <div>
+            <label>option 3</label>
+            <textarea
+              name="option3"
+              [(ngModel)]="options![2]"
+              id="question"
+              placeholder="Add option for C"
+            ></textarea>
+          </div>
+          <div>
+            <label>option 4</label>
+            <textarea
+              name="option4"
+              [(ngModel)]="options![3]"
+              id="question"
+              placeholder="add option for D"
+            ></textarea>
+          </div>
+          <button
+            class="btn btn-sm d-block"
+            [disabled]="!myForm.valid"
+            (click)="addQuestion(2)"
+          >
+            add
+          </button>
+        </form>
+      </div>
+      <div class="d-flex justify-content-between m-3">
+        <div>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="previousPage()"
+          >
+            < previous page
+          </button>
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary" (click)="nextPage()">
+            > Next Page
+          </button>
+        </div>
       </div>
     </div>
     <div *ngIf="currentPage == 3">
@@ -129,53 +161,106 @@
       <div *ngFor="let question of questions; let i = index">
         <ng-container *ngIf="question.questionType === 'Fill'">
           <!-- Render a true/false question -->
-          <div class="question p-2 m-4">
-            <h5>{{ i + 1 + ". " + question.question }}</h5>
-            <input
-              type="text"
-              #fill
-              (change)="
-                saveAnswer(
-                  question.questionType,
-                  question.questionNumber,
-                  fill.value
-                )
+          <div class="question p-2 m-4 d-flex justify-content-between">
+            <h5>{{ question.questionNumber + ". " + question.question }}</h5>
+            <button
+              class="btn btn-sm remove-btn"
+              (click)="
+                removeQuestion(question.questionType, question.questionNumber)
               "
-            />
+            >
+              remove
+            </button>
           </div>
         </ng-container>
       </div>
-      <div class="d-flex justify-content-end m-3">
-        <button type="button" class="btn btn-primary" (click)="nextPage()">
-          > Next Page
-        </button>
+      <div class="question p-2 m-4">
+        <form #myForm="ngForm">
+          <div class="mb-2">
+            <label><b>Question</b></label>
+          </div>
+          <textarea
+            name="question"
+            [(ngModel)]="fillQuestion"
+            id="question"
+            placeholder="Add question"
+            required
+          ></textarea>
+          <button
+            class="btn btn-sm d-block"
+            (click)="addQuestion(3)"
+            [disabled]="!myForm.valid"
+          >
+            add
+          </button>
+        </form>
+      </div>
+      <div class="d-flex justify-content-between m-3">
+        <div>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="previousPage()"
+          >
+            < previous page
+          </button>
+        </div>
+        <div>
+          <button type="button" class="btn btn-primary" (click)="nextPage()">
+            > Next Page
+          </button>
+        </div>
       </div>
     </div>
     <div *ngIf="currentPage == 4">
       <h4>Short Answer questions</h4>
       <div *ngFor="let question of questions; let i = index">
         <ng-container *ngIf="question.questionType === 'Short_Answer'">
-          <!-- Render a true/false question -->
-          <div class="question p-2 m-4">
-            <h5>{{ i + 1 + ". " + question.question }}</h5>
-            <textarea
-              #fill
-              (change)="
-                saveAnswer(
-                  question.questionType,
-                  question.questionNumber,
-                  fill.value
-                )
+          <!-- Render a short answer question -->
+          <div class="question p-2 m-4 d-flex justify-content-between">
+            <h5>{{ question.questionNumber + ". " + question.question }}</h5>
+            <button
+              class="btn btn-sm remove-btn"
+              (click)="
+                removeQuestion(question.questionType, question.questionNumber)
               "
-              style="width: 70%"
-            ></textarea>
+            >
+              remove
+            </button>
           </div>
         </ng-container>
       </div>
-      <div class="d-flex justify-content-end m-3">
-        <button type="button" class="btn btn-primary" (click)="onSubmit()">
-          submit
-        </button>
+      <div class="question p-2 m-4">
+        <form #myForm="ngForm">
+          <div class="mb-2">
+            <label><b>Question</b></label>
+          </div>
+          <textarea
+            name="question"
+            [(ngModel)]="shortQuestion"
+            id="question"
+            placeholder="Add question"
+            required
+          ></textarea>
+          <button
+            class="btn btn-sm d-block"
+            (click)="addQuestion(4)"
+            [disabled]="!myForm.valid"
+          >
+            add
+          </button>
+        </form>
+      </div>
+      <div class="d-flex justify-content-between m-3">
+        <div>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="previousPage()"
+          >
+            < previous page
+          </button>
+        </div>
       </div>
     </div>
   </div>

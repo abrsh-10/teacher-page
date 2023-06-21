@@ -23,7 +23,6 @@ export class CourseMaterialService extends DataService<any> {
   }
   postCourseMaterial(courseMaterial: CourseMaterial): Observable<FormData> {
     const formData = new FormData();
-    sessionStorage.setItem('email', 'merryketsele@gmail.com');
     formData.append('file', courseMaterial.file!, courseMaterial.file!.name);
     formData.append('uploader', courseMaterial.courseMaterialUploader!);
     formData.append('description', courseMaterial.courseMaterialDescription!);

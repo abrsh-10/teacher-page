@@ -16,24 +16,9 @@ export class AssignmentSolutionService extends DataService<any> {
   protected getUrl(): string {
     return environment.assignmentSolutionApiUrl;
   }
-  postAssignmentSolution(
-    assignmentSolution: AssignmentSolution
-  ): Observable<FormData> {
-    const formData = new FormData();
-    formData.append(
-      'file',
-      assignmentSolution.file,
-      assignmentSolution.file.name
-    );
-    formData.append('uploader', assignmentSolution.uploader);
-    formData.append('description', assignmentSolution.description!);
-    formData.append('assignment_id', assignmentSolution.assignmentId);
-    const url = `${this.getUrl()}`;
-    return this.add(url, formData);
-  }
-  getAssignmentSolution(uploader: string): Observable<any[]> {
-    const url = `${this.getUrl()}/uploader`;
-    return this.getById(url, uploader);
+  getAssignmentSolutionById(id: string): Observable<any[]> {
+    const url = `${this.getUrl()}/id`;
+    return this.getById(url, id);
   }
   deleteAssignmentSolution(id: string): Observable<any> {
     const url = `${this.getUrl()}/delete`;

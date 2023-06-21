@@ -50,12 +50,14 @@
           Topics
         </div>
         <div *ngIf="showTopic">
-          <div
-            class="side-bar-sub-items"
-            *ngFor="let topic of topics"
-            (click)="toogleSideBarItems(3, topic)"
-          >
-            {{ topic.topicTitle }}
+          <div class="side-bar-sub-items" *ngFor="let topic of topics">
+            <div (click)="toogleSideBarItems(3, topic)">
+              {{ topic.topicTitle }}
+            </div>
+            <i
+              class="fa fa-trash delete-topic-icon"
+              (click)="deleteTopic(topic.topicId)"
+            ></i>
           </div>
         </div>
         <div
@@ -298,11 +300,19 @@
         </section>
         <section *ngIf="showLesson">
           <div class="row">
-            <div class="col-12 mt-3 mb-1">
+            <div class="col-10 mt-3 mb-1">
               <h5 class="text-uppercase">
                 Lessons for Topic: <b>{{ topicTitle }}</b>
               </h5>
               <p class="text-muted">Description: {{ topicDescription }}</p>
+            </div>
+            <div class="col-2">
+              <button
+                class="btn align-items-bottom mt-3"
+                (click)="addLesson(topicId!)"
+              >
+                Add lesson
+              </button>
             </div>
           </div>
           <div class="row">
@@ -330,12 +340,18 @@
                         </p>
                       </div>
                     </div>
-                    <div class="align-self-center me-1">
+                    <div class="align-self-center d-flex flex-column me-1">
                       <button
                         class="btn btn-outline-dark mb-0"
                         (click)="activateVideo(lesson.lessonVideoId)"
                       >
                         view lesson
+                      </button>
+                      <button
+                        class="btn btn-sm delete-button"
+                        (click)="deleteLesson(lesson.lessonId)"
+                      >
+                        delete
                       </button>
                     </div>
                   </div>
@@ -355,8 +371,20 @@
         <section *ngIf="showExam">
           <div class="row">
             <div class="col-12 mt-3 mb-1">
-              <h5 class="text-uppercase">Exams</h5>
-              <p class="text-muted">Exams for this Course</p>
+              <div class="row">
+                <div class="col-10 mt-3 mb-1">
+                  <h5 class="text-uppercase">Exams</h5>
+                  <p>exams for this course are listed below</p>
+                </div>
+                <div class="col-2">
+                  <button
+                    class="btn align-items-bottom mt-3"
+                    (click)="addExam()"
+                  >
+                    Add new exam
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -379,24 +407,45 @@
                     exam.examName
                   }}
                 </div>
-                <div *ngIf="exam.expanded" class="exam-details">
-                  <ul>
-                    <li>
-                      weight: <b>{{ exam.weight }}</b>
-                    </li>
-                    <li>
-                      start Date & Time:<b> {{ formatDate(exam.startTime) }}</b>
-                    </li>
-                  </ul>
+                <div *ngIf="exam.expanded">
+                  <div class="exam-details">
+                    <ul>
+                      <li>
+                        weight: <b>{{ exam.weight }}</b>
+                      </li>
+                      <li>
+                        start Date & Time:<b>
+                          {{ formatDate(exam.startTime) }}</b
+                        >
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="d-flex">
+                    <button
+                      class="btn btn-sm"
+                      (click)="displayAnswer(exam.examId)"
+                    >
+                      answers
+                    </button>
+                    <button class="btn btn-sm">edit exam</button>
+                  </div>
                 </div>
               </div>
-              <div class="align-self-center exam-start-button">
+              <div
+                class="align-self-center d-flex flex-column me-1"
+                style="margin-left: auto"
+              >
                 <button
                   class="btn btn-outline-dark mb-0"
-                  [disabled]="!exam.active"
                   (click)="toogleSideBarItems(6, undefined, exam)"
                 >
-                  Start Exam
+                  edit questions
+                </button>
+                <button
+                  class="btn btn-sm delete-button"
+                  (click)="deleteExam(exam.examId)"
+                >
+                  delete
                 </button>
               </div>
               <hr />
@@ -407,11 +456,11 @@
           <div class="row">
             <div class="col-10 mt-3 mb-1">
               <h5 class="text-uppercase">Assignments</h5>
-              <p>your assignments for this course are listed below</p>
+              <p>assignments for this course are listed below</p>
             </div>
             <div class="row col-md-2 col-4 mb-sm-2 mb-md-auto uploadButton">
-              <button class="btn btn-sm" (click)="showUploadForm()">
-                upload Solution
+              <button class="btn btn-sm" (click)="addAssignment()">
+                add assignment
               </button>
             </div>
           </div>
@@ -461,9 +510,17 @@
                       </button>
                       <button
                         class="btn btn-sm"
-                        (click)="viewSolution(assignment)"
+                        (click)="
+                          displayAssignmentSolution(assignment.assignmentId)
+                        "
                       >
-                        Solution
+                        solutions
+                      </button>
+                      <button
+                        class="btn btn-sm delete-button"
+                        (click)="deleteAssignment(assignment.assignmentId)"
+                      >
+                        delete
                       </button>
                     </div>
                   </div>
@@ -473,9 +530,18 @@
           </div>
         </section>
         <section *ngIf="showQuestion">
-          <app-exam [examId]="examId" [examDuration]="examDuration"></app-exam>
+          <app-exam [examId]="examId"></app-exam>
+        </section>
+        <section *ngIf="showAssignmentSolution">
+          <app-assignment-solution
+            [assignmentSolution]="assignmentSolution!"
+          ></app-assignment-solution>
+        </section>
+        <section *ngIf="showExamSolution">
+          <app-exam-solution [examSolution]="examSolution!"></app-exam-solution>
         </section>
       </div>
     </div>
   </div>
 </div>
+<app-footer></app-footer>

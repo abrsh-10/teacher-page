@@ -1,7 +1,10 @@
 export class AssignmentSolution {
   file!: File;
+  assignmentSolutionId?: string;
+  assignmentSolutionName?: string;
+  assignmentSolutionSize?: number;
   uploader!: string;
-  description?: string;
+  assignmentSolutionDescription?: string;
   assignmentId!: string;
   constructor(
     file: File,
@@ -11,7 +14,7 @@ export class AssignmentSolution {
   ) {
     this.file = file;
     this.uploader = uploader;
-    this.description = description;
+    this.assignmentSolutionDescription = description;
     this.assignmentId = assignmentId;
   }
 }

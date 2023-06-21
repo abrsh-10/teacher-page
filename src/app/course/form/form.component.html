@@ -1,7 +1,7 @@
 <div mat-dialog-content class="popup col-6">
   <h4>{{ data.title }}</h4>
   <form #myForm="ngForm">
-    <div class="form-control">
+    <div class="form-control" *ngIf="data.fileIncluded">
       <div class="mb-2">
         <label><b>Select a file</b></label>
       </div>
@@ -13,7 +13,107 @@
         required
       />
     </div>
-    <div class="form-control">
+    <div *ngIf="data.type == 2">
+      <div class="form-control">
+        <div class="mb-2">
+          <label><b>Topic Title</b></label>
+        </div>
+        <input
+          type="text"
+          name="title"
+          [(ngModel)]="lessonTitle"
+          id="topicTitle"
+          placeholder="Add lesson title"
+          required
+        />
+      </div>
+      <div class="form-control">
+        <div class="mb-2">
+          <label><b>Topic video Id</b></label>
+        </div>
+        <input
+          type="text"
+          name="videoId"
+          [(ngModel)]="videoId"
+          id="videoId"
+          placeholder="include video id from from youtube"
+          required
+        />
+      </div>
+    </div>
+    <div *ngIf="data.type == 3">
+      <div class="form-control">
+        <div class="mb-2">
+          <label><b>Exam name</b></label>
+        </div>
+        <input
+          type="text"
+          name="title"
+          [(ngModel)]="examName"
+          id="examName"
+          placeholder="Add exam name"
+          required
+        />
+      </div>
+      <div class="form-control">
+        <div class="mb-2">
+          <label><b>start Date and Time</b></label>
+        </div>
+        <input
+          type="datetime-local"
+          name="weight"
+          [(ngModel)]="startDateTime"
+          id="weight"
+          required
+        />
+      </div>
+      <div class="form-control">
+        <div class="mb-2">
+          <label><b>weight</b></label>
+        </div>
+        <input
+          type="number"
+          name="weight"
+          [(ngModel)]="examWeight"
+          id="weight"
+          placeholder="enter exam's weight"
+          required
+        />
+      </div>
+      <div class="form-control">
+        <div class="mb-2">
+          <label><b>duration</b></label>
+        </div>
+        <input
+          type="number"
+          name="duration"
+          [(ngModel)]="examDuration"
+          id="duration"
+          placeholder="enter exam's duration(minutes)"
+          required
+        />
+      </div>
+    </div>
+    <div *ngIf="data.type == 4">
+      <div class="form-control">
+        <div class="mb-2">
+          <label for="user">Choose Student</label>
+        </div>
+        <select
+          name="student"
+          id="student"
+          class="assignment"
+          [(ngModel)]="studentEmail"
+          required
+        >
+          <option value="">-- select a student --</option>
+          <option *ngFor="let student of users" [value]="student.email">
+            {{ student.firstName + ": " + student.email }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-control" *ngIf="!(data.type == 3 || data.type == 4)">
       <div class="mb-2">
         <label><b>Description</b></label>
       </div>

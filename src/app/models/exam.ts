@@ -3,6 +3,7 @@ export class Exam {
   examName!: string;
   weight!: number;
   startTime!: string;
+  creator?: string;
   duration!: number;
   courseId!: string;
   active!: boolean;

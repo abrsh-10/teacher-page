@@ -24,4 +24,8 @@ export class UserService extends DataService<any> {
     const url = `${this.getUrl()}/log-in-email`;
     return this.get(url);
   }
+  getByCourse(courseId: string): Observable<User[]> {
+    const url = `${this.getUrl()}/students`;
+    return this.search(url, courseId);
+  }
 }

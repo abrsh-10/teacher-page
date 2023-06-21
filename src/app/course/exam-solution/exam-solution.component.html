@@ -1,0 +1,24 @@
+<span class="text-muted h5">seen</span>
+<div class="text-center h3 my-2">by:{{ examSolution.studentEmail }}</div>
+<table class="table table-bordered table-striped">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">question type</th>
+      <th scope="col">question number</th>
+      <th scope="col" rowspan="3">Answer</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let answer of examSolution.answers">
+      <td>{{ answer.questionType }}</td>
+      <td>{{ answer.questionNumber }}</td>
+      <td>{{ answer.answer }}</td>
+    </tr>
+  </tbody>
+</table>
+<div>
+  <button class="btn btn-sm" (click)="markSeen()" *ngIf="!examSolution.seen">
+    mark as seen
+  </button>
+</div>

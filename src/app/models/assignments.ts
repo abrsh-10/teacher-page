@@ -4,7 +4,7 @@ export class Assignments {
   assignmentSize?: number;
   assignmentDescription?: string;
   assignmentUploader?: string;
-  courseId?: String;
+  courseId?: string;
 
   constructor(
     file: File,

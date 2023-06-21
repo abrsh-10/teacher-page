@@ -20,4 +20,12 @@ export class LessonService extends DataService<Lesson> {
     const url = `${this.getUrl()}/topic-id`;
     return this.getById(url, id);
   }
+  addLesson(lesson: Lesson): Observable<Lesson> {
+    const url = `${this.getUrl()}`;
+    return this.add(url, lesson);
+  }
+  deleteLesson(lessonId: string): Observable<Lesson> {
+    const url = `${this.getUrl()}/lesson-id`;
+    return this.delete(url, lessonId);
+  }
 }

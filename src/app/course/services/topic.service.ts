@@ -35,4 +35,8 @@ export class TopicService extends DataService<Topic> {
     const url = `${this.getUrl()}/topic-description`;
     return this.update(url, id, topicDescription);
   }
+  deleteTopic(topicId: string): Observable<Topic> {
+    const url = `${this.getUrl()}/topic-id`;
+    return this.delete(url, topicId);
+  }
 }

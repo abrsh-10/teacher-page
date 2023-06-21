@@ -21,4 +21,15 @@ export class ExamSolutionService extends DataService<ExamSolution> {
     const url = `${this.getUrl()}`;
     return this.add(url, examSolution);
   }
+  getExamSolution(
+    studentEmail: string,
+    examId: string
+  ): Observable<ExamSolution> {
+    const url = `${this.getUrl()}/exam-student/${examId}?studentEmail=${studentEmail}`;
+    return this.get(url);
+  }
+  markSeen(id: string): Observable<ExamSolution> {
+    const url = `${this.getUrl()}/mark-seen`;
+    return this.update(url, id, null);
+  }
 }

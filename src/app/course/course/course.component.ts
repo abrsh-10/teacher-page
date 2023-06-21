@@ -18,6 +18,8 @@ import { PopupComponent, PopupData } from 'src/app/popup/popup.component';
 import { Assignments } from 'src/app/models/assignments';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CourseMaterial } from 'src/app/models/course-material';
+import { ExamSolutionService } from '../services/exam-solution.service';
+import { ExamSolution } from 'src/app/models/exam-solution';
 
 @Component({
   selector: 'app-course',
@@ -37,8 +39,11 @@ export class CourseComponent implements OnInit {
   showAssignment = false;
   showQuestion? = false;
   showVideo? = false;
+  showAssignmentSolution? = false;
+  showExamSolution? = false;
   courseMaterials?: any;
   topics?: any;
+  topicId?: string;
   topicTitle?: string;
   topicDescription?: string;
   lessons?: any;
@@ -58,6 +63,9 @@ export class CourseComponent implements OnInit {
   topic_title?: string;
   topic_description?: string;
 
+  assignmentSolution?: AssignmentSolution;
+  examSolution?: ExamSolution;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -68,6 +76,7 @@ export class CourseComponent implements OnInit {
     private examService: ExamService,
     private assignmentService: AssignmentService,
     private assignmentSolutionService: AssignmentSolutionService,
+    private examSolutionService: ExamSolutionService,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
@@ -122,6 +131,7 @@ export class CourseComponent implements OnInit {
       this.showQuestion = false;
       this.showVideo = false;
       this.showLesson = true;
+      this.topicId = topic?.topicId;
       this.topicTitle = topic?.topicTitle;
       this.topicDescription = topic?.topicDescription;
       this.lessonService.getLessons(topic?.topicId).subscribe((data) => {
@@ -159,9 +169,6 @@ export class CourseComponent implements OnInit {
       this.showQuestion = true;
       this.examId = exam!.examId;
       this.examActiveStatus = exam!.active;
-      //calculate the remaining duration
-      this.examDuration =
-        this.getRemainingMinutes(exam?.startTime!, exam?.duration!) * 60;
     }
   }
   activateVideo(videoId: string) {
@@ -173,115 +180,6 @@ export class CourseComponent implements OnInit {
     this.showQuestion = false;
     this.showVideo = true;
     this.videoId = videoId;
-  }
-  showUploadForm(assignment?: any) {
-    const data: FormData = {
-      title: 'Upload Solution Form',
-      assignments: assignment || this.assignments,
-      fileIncluded: true,
-      positiveButton: 'Upload',
-      negativeButton: 'Cancel',
-    };
-    const dialogRef = this.dialog.open(FormComponent, { data });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.assignmentSolutionService
-          .getAssignmentSolution('abrhamsisay33@gmail.com')
-          .subscribe((data) => {
-            for (let solution of data) {
-              if (solution.assignmentId == result.assignmentId) {
-                const data: PopupData = {
-                  title: 'Error',
-                  content: [
-                    'assignment solution already exists for this assignment',
-                  ],
-                  positiveButton: 'close',
-                };
-                const dialogRef = this.dialog.open(PopupComponent, { data });
-                return;
-              }
-            }
-            this.assignmentSolutionService
-              .postAssignmentSolution(result)
-              .subscribe(
-                (result) => {
-                  // handle the successful response
-                  console.log('Exam solution submitted successfully:', result);
-                },
-                (error) => {
-                  // handle the error response
-                  console.error('Failed to submit exam solution:', error);
-                }
-              );
-          });
-      } else {
-        return;
-      }
-    });
-  }
-  viewSolution(assignment: any) {
-    this.assignmentSolutionService
-      .getAssignmentSolution(this.email)
-      .subscribe((data) => {
-        let solution: any;
-        data.forEach((item) => {
-          if (item.assignmentId == assignment.assignmentId) {
-            solution = item;
-          }
-        });
-        if (solution) {
-          const data: PopupData = {
-            title: 'Assignment Solution',
-            content: [
-              'Solution Name: ' + solution.assignmentSolutionName,
-              'Solution Size: ' +
-                this.bytesToMegabytes(solution.assignmentSolutionSize, 2) +
-                'MB',
-              'Solution description: ' + solution.assignmentSolutionDescription,
-            ],
-            positiveButton: 'delete',
-            negativeButton: 'close',
-          };
-          const dialogRef = this.dialog.open(PopupComponent, { data });
-          dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-              const data: PopupData = {
-                title: 'Delete Assignment Solution',
-                content: ['Are you sure to delete the assignment solution'],
-                positiveButton: 'Yes',
-                negativeButton: 'No',
-              };
-              const dialogRef = this.dialog.open(PopupComponent, { data });
-              dialogRef.afterClosed().subscribe((result) => {
-                if (result) {
-                  this.assignmentSolutionService
-                    .deleteAssignmentSolution(solution.assignmentSolutionId)
-                    .subscribe();
-                } else {
-                  return;
-                }
-              });
-            } else {
-              return;
-            }
-          });
-        } else {
-          const data: PopupData = {
-            title: 'Assignment Solution',
-            content: ['you have not added any solution to this assignment yet'],
-            positiveButton: 'upload',
-            negativeButton: 'close',
-          };
-          const dialogRef = this.dialog.open(PopupComponent, { data });
-          dialogRef.afterClosed().subscribe((result) => {
-            if (result) {
-              this.showUploadForm([assignment]);
-            } else {
-              return;
-            }
-          });
-        }
-      });
   }
   downloadFile(id: string, fileName: string) {
     this.courseMaterialService.downloadFile(id).subscribe((data: Blob) => {
@@ -317,7 +215,6 @@ export class CourseComponent implements OnInit {
 
     return formattedDate;
   }
-
   formatMinutes(minutes: number): string {
     if (minutes < 10) {
       return `0${minutes}`;
@@ -327,14 +224,6 @@ export class CourseComponent implements OnInit {
   expand(exam: Exam) {
     exam.expanded = !exam.expanded;
   }
-  getRemainingMinutes(dateString: string, minutesToAdd: number): number {
-    const inputDate = new Date(dateString);
-    const targetDate = new Date(inputDate.getTime() + minutesToAdd * 60 * 1000); // Add minutes to input date
-    const currentDate = new Date();
-    const timeDifference = targetDate.getTime() - currentDate.getTime();
-    const minutesDifference = timeDifference / (60 * 1000); // Convert milliseconds to minutes and round up
-    return minutesDifference;
-  }
   showSnackbarAction(content: string, action: string | undefined) {
     let snack = this.snackBar.open(content, action);
     snack.afterDismissed().subscribe(() => {});
@@ -342,7 +231,7 @@ export class CourseComponent implements OnInit {
   }
   uploadCourseMaterial() {
     const data: FormData = {
-      title: 'Upload Solution Form',
+      title: 'Upload Course Material Form',
       courseId: this.courseId,
       type: 0,
       fileIncluded: true,
@@ -394,16 +283,20 @@ export class CourseComponent implements OnInit {
     this.topicService.addTopic(topic).subscribe();
     this.showTopic = false;
   }
+
   newTitle?: string;
   editedTopicForTitle?: string;
+
   editTopicName() {
     this.topicService
       .editTopicName(this.newTitle!, this.editedTopicForTitle!)
       .subscribe();
     this.showTopic = false;
   }
+
   newDescription?: string;
   editedTopicForDescription?: string;
+
   editTopicDescription() {
     this.topicService
       .editTopicDescription(
@@ -412,5 +305,214 @@ export class CourseComponent implements OnInit {
       )
       .subscribe();
     this.showTopic = false;
+  }
+  deleteTopic(topicId: string) {
+    const data: PopupData = {
+      title: 'Delete Topic',
+      content: [
+        'Are you sure to delete the topic',
+        '*deleting a topic will automatically delete all lessons inside it',
+      ],
+      positiveButton: 'Yes',
+      negativeButton: 'No',
+    };
+    const dialogRef = this.dialog.open(PopupComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.topicService.deleteTopic(topicId).subscribe();
+        this.showSnackbarAction('topic deleted', 'OK');
+        this.showTopic = false;
+      } else {
+        return;
+      }
+    });
+  }
+  addLesson(topicId: string) {
+    const data: FormData = {
+      title: 'Add lesson',
+      courseId: topicId,
+      type: 2,
+      fileIncluded: false,
+      positiveButton: 'add',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.lessonService.addLesson(result).subscribe(
+          (result) => {
+            this.showSnackbarAction('lesson successfully added', 'OK');
+            this.showLesson = false;
+          },
+          (error) => {
+            this.showSnackbarAction('unable to add new lesson', 'OK');
+          }
+        );
+      } else {
+        return;
+      }
+    });
+  }
+  deleteLesson(lessonId: string) {
+    const data: PopupData = {
+      title: 'Delete Lesson',
+      content: ['Are you sure to delete lesson'],
+      positiveButton: 'Yes',
+      negativeButton: 'No',
+    };
+    const dialogRef = this.dialog.open(PopupComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.lessonService.deleteLesson(lessonId).subscribe();
+        this.showSnackbarAction('lesson is deleted', 'OK');
+        this.showLesson = false;
+      } else {
+        return;
+      }
+    });
+  }
+  addExam() {
+    const data: FormData = {
+      title: 'Add Exam',
+      courseId: this.courseId,
+      type: 3,
+      fileIncluded: false,
+      positiveButton: 'add',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.examService.addExam(result).subscribe(
+          (result) => {
+            this.showSnackbarAction('exam successfully added', 'OK');
+            this.showLesson = false;
+          },
+          (error) => {
+            this.showSnackbarAction('unable to add new exam', 'OK');
+          }
+        );
+      } else {
+        return;
+      }
+    });
+  }
+  deleteExam(examId: string) {
+    const data: PopupData = {
+      title: 'Delete Exam',
+      content: ['Are you sure to delete exam'],
+      positiveButton: 'Yes',
+      negativeButton: 'No',
+    };
+    const dialogRef = this.dialog.open(PopupComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.examService.deleteExam(examId).subscribe();
+        this.showSnackbarAction('lesson is deleted', 'OK');
+        this.showExam = false;
+      } else {
+        return;
+      }
+    });
+  }
+  addAssignment() {
+    const data: FormData = {
+      title: 'Upload Assignment Form',
+      courseId: this.courseId,
+      type: 1,
+      fileIncluded: true,
+      positiveButton: 'Upload',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.assignmentService.postAssignment(result).subscribe(
+          (result) => {
+            this.showSnackbarAction('assignment successfully added', 'OK');
+            this.showAssignment = false;
+          },
+          (error) => {
+            this.showSnackbarAction('unable to add new assignment', 'OK');
+            this.showAssignment = false;
+          }
+        );
+      } else {
+        return;
+      }
+    });
+  }
+  deleteAssignment(assignmentId: string) {
+    const data: PopupData = {
+      title: 'Delete Assignment',
+      content: ['Are you sure to delete the assignment'],
+      positiveButton: 'Yes',
+      negativeButton: 'No',
+    };
+    const dialogRef = this.dialog.open(PopupComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.assignmentService
+          .deleteAssignment(assignmentId)
+          .subscribe((result) => {
+            this.showSnackbarAction('assignment is deleted', 'OK');
+            this.showAssignment = false;
+          });
+      } else {
+        return;
+      }
+    });
+  }
+  displayAssignmentSolution(assignmentId: string) {
+    const data: FormData = {
+      title: 'choose Student',
+      type: 4,
+      courseId: this.courseId,
+      fileIncluded: false,
+      positiveButton: 'submit',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.assignmentSolutionService
+          .getAssignmentSolutionById(assignmentId)
+          .subscribe((solutions) => {
+            solutions.forEach((solution) => {
+              if (solution.uploader == result) {
+                this.showAssignment = false;
+                this.showAssignmentSolution = true;
+                this.assignmentSolution = solution;
+              }
+            });
+          });
+      } else {
+        return;
+      }
+    });
+  }
+  displayAnswer(examId: string) {
+    const data: FormData = {
+      title: 'choose Student',
+      type: 4,
+      courseId: this.courseId,
+      fileIncluded: false,
+      positiveButton: 'submit',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.examSolutionService
+          .getExamSolution(result, examId)
+          .subscribe((solution) => {
+            this.showExam = false;
+            this.showExamSolution = true;
+            this.examSolution = solution;
+          });
+      } else {
+        return;
+      }
+    });
   }
 }

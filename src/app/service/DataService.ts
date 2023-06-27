@@ -34,12 +34,10 @@ export class DataService<T> {
   add(url: string, item: T): Observable<T> {
     return this.http.post<T>(url, item);
   }
-
   update(url: string, id: String, item: any): Observable<T> {
     const apiUrl = `${url}/${id}`;
     return this.http.put<T>(apiUrl, item);
   }
-
   delete(url: string, id: String): Observable<T> {
     const apiUrl = `${url}/${id}`;
     return this.http.delete<T>(apiUrl);

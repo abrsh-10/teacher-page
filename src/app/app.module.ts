@@ -6,12 +6,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  GoogleLoginProvider,
-  SocialAuthServiceConfig,
-  SocialLoginModule,
-  GoogleSigninButtonModule,
-} from '@abacritt/angularx-social-login';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,8 +36,6 @@ import { AboutUsComponent } from './about-us/about-us.component';
     CourseModule,
     MatDialogModule,
     MatIconModule,
-    SocialLoginModule,
-    GoogleSigninButtonModule,
     FormsModule,
   ],
   bootstrap: [AppComponent],

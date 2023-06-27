@@ -17,7 +17,7 @@ export class FaqService extends DataService<Faq> {
     return environment.faqApiUrl;
   }
   getFaqs(): Observable<Faq[]> {
-    const url = `${this.getUrl()}/role/Student`;
+    const url = `${this.getUrl()}/role/Teacher`;
     return this.getAll(url);
   }
 }

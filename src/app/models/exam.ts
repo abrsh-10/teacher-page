@@ -2,7 +2,7 @@ export class Exam {
   examId!: string;
   examName!: string;
   weight!: number;
-  startTime!: string;
+  startTime!: Date;
   creator?: string;
   duration!: number;
   courseId!: string;

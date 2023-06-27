@@ -20,6 +20,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CourseMaterial } from 'src/app/models/course-material';
 import { ExamSolutionService } from '../services/exam-solution.service';
 import { ExamSolution } from 'src/app/models/exam-solution';
+import { environment } from 'src/environments/environment';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-course',
@@ -82,15 +84,22 @@ export class CourseComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.courseId = this.route.snapshot.paramMap.get('id');
-    this.email = sessionStorage.getItem('email')!;
-    this.courseService.getCourse(this.courseId).subscribe((data) => {
-      this.course = data;
-    });
-    this.courseMaterialService
-      .getCourseMaterial(this.courseId)
-      .subscribe((data) => {
-        this.courseMaterials = data;
+    if (sessionStorage.getItem('token')) {
+      const encryptedEmail = sessionStorage.getItem('token');
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        encryptedEmail!.toString(),
+        environment.jwtSecret
+      ).toString(CryptoJS.enc.Utf8);
+      this.email = decryptedEmail;
+      this.courseService.getCourse(this.courseId).subscribe((data) => {
+        this.course = data;
       });
+      this.courseMaterialService
+        .getCourseMaterial(this.courseId)
+        .subscribe((data) => {
+          this.courseMaterials = data;
+        });
+    }
   }
   changeRoute(route: string) {
     this.router.navigate([route]);
@@ -100,12 +109,15 @@ export class CourseComponent implements OnInit {
   }
   toogleSideBarItems(position: Number, topic?: Topic, exam?: Exam) {
     if (position == 1) {
+      //show course materials
       this.showTopic = false;
       this.showLesson = false;
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAssignmentSolution = false;
+      this.showExamSolution = false;
       this.showCourseMaterial = !this.showCourseMaterial;
       this.courseMaterialService
         .getCourseMaterial(this.courseId)
@@ -113,23 +125,29 @@ export class CourseComponent implements OnInit {
           this.courseMaterials = data;
         });
     } else if (position == 2) {
+      //show topics
       this.showCourseMaterial = false;
       this.showLesson = false;
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAssignmentSolution = false;
+      this.showExamSolution = false;
       this.showTopic = !this.showTopic;
       this.topicService.getTopics(this.courseId).subscribe((data) => {
         this.topics = data;
       });
     } else if (position == 3) {
+      //show lessons
       this.showCourseMaterial = false;
       this.showTopic = false;
       this.showExam = false;
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAssignmentSolution = false;
+      this.showExamSolution = false;
       this.showLesson = true;
       this.topicId = topic?.topicId;
       this.topicTitle = topic?.topicTitle;
@@ -138,34 +156,43 @@ export class CourseComponent implements OnInit {
         this.lessons = data;
       });
     } else if (position == 4) {
+      //show exams
       this.showCourseMaterial = false;
       this.showTopic = false;
       this.showLesson = false;
       this.showAssignment = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAssignmentSolution = false;
+      this.showExamSolution = false;
       this.showExam = !this.showExam;
       this.examService.getExams(this.courseId).subscribe((data) => {
         this.examQuestions = data;
       });
     } else if (position == 5) {
+      //show assignments
       this.showCourseMaterial = false;
       this.showTopic = false;
       this.showLesson = false;
       this.showExam = false;
       this.showQuestion = false;
       this.showVideo = false;
+      this.showAssignmentSolution = false;
+      this.showExamSolution = false;
       this.showAssignment = !this.showAssignment;
       this.assignmentService.getAssignments(this.courseId).subscribe((data) => {
         this.assignments = data;
       });
     } else if (position == 6) {
+      //show questions of the exam
       this.showCourseMaterial = false;
       this.showTopic = false;
       this.showLesson = false;
       this.showExam = false;
       this.showAssignment = false;
       this.showVideo = false;
+      this.showAssignmentSolution = false;
+      this.showExamSolution = false;
       this.showQuestion = true;
       this.examId = exam!.examId;
       this.examActiveStatus = exam!.active;
@@ -229,6 +256,7 @@ export class CourseComponent implements OnInit {
     snack.afterDismissed().subscribe(() => {});
     snack.onAction().subscribe(() => {});
   }
+  //coursematerial functions
   uploadCourseMaterial() {
     const data: FormData = {
       title: 'Upload Course Material Form',
@@ -244,10 +272,14 @@ export class CourseComponent implements OnInit {
         this.courseMaterialService.postCourseMaterial(result).subscribe(
           (result) => {
             this.showSnackbarAction('course material successfully added', 'OK');
-            this.showCourseMaterial = false;
+            this.courseMaterialService
+              .getCourseMaterial(this.courseId)
+              .subscribe((data) => {
+                this.courseMaterials = data;
+              });
           },
           (error) => {
-            this.showSnackbarAction('unable to add new course material', 'OK');
+            this.showSnackbarAction(error, 'OK');
           }
         );
       } else {
@@ -267,21 +299,32 @@ export class CourseComponent implements OnInit {
       if (result) {
         this.courseMaterialService
           .deleteCourseMaterial(courseMaterial.courseMaterialId!)
-          .subscribe();
+          .subscribe(() => {
+            this.courseMaterialService
+              .getCourseMaterial(this.courseId)
+              .subscribe((data) => {
+                this.courseMaterials = data;
+              });
+          });
         this.showSnackbarAction('course material is deleted', 'OK');
-        this.showCourseMaterial = false;
       } else {
         return;
       }
     });
   }
+  //topic functions
   addTopic() {
     const topic = new Topic();
     topic.courseId = this.courseId;
     topic.topicTitle = this.topic_title!;
     topic.topicDescription = this.topic_description!;
-    this.topicService.addTopic(topic).subscribe();
-    this.showTopic = false;
+    this.topicService.addTopic(topic).subscribe(() => {
+      this.topicService.getTopics(this.courseId).subscribe((data) => {
+        this.topics = data;
+      });
+    });
+    this.topic_title = '';
+    this.topic_description = '';
   }
 
   newTitle?: string;
@@ -290,8 +333,12 @@ export class CourseComponent implements OnInit {
   editTopicName() {
     this.topicService
       .editTopicName(this.newTitle!, this.editedTopicForTitle!)
-      .subscribe();
-    this.showTopic = false;
+      .subscribe(() => {
+        this.topicService.getTopics(this.courseId).subscribe((data) => {
+          this.topics = data;
+        });
+      });
+    this.newTitle = '';
   }
 
   newDescription?: string;
@@ -303,8 +350,12 @@ export class CourseComponent implements OnInit {
         this.newDescription!,
         this.editedTopicForDescription!
       )
-      .subscribe();
-    this.showTopic = false;
+      .subscribe(() => {
+        this.topicService.getTopics(this.courseId).subscribe((data) => {
+          this.topics = data;
+        });
+      });
+    this.newDescription = '';
   }
   deleteTopic(topicId: string) {
     const data: PopupData = {
@@ -319,14 +370,18 @@ export class CourseComponent implements OnInit {
     const dialogRef = this.dialog.open(PopupComponent, { data });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.topicService.deleteTopic(topicId).subscribe();
+        this.topicService.deleteTopic(topicId).subscribe(() => {
+          this.topicService.getTopics(this.courseId).subscribe((data) => {
+            this.topics = data;
+          });
+        });
         this.showSnackbarAction('topic deleted', 'OK');
-        this.showTopic = false;
       } else {
         return;
       }
     });
   }
+  //lesson functions
   addLesson(topicId: string) {
     const data: FormData = {
       title: 'Add lesson',
@@ -342,10 +397,12 @@ export class CourseComponent implements OnInit {
         this.lessonService.addLesson(result).subscribe(
           (result) => {
             this.showSnackbarAction('lesson successfully added', 'OK');
-            this.showLesson = false;
+            this.lessonService.getLessons(topicId).subscribe((data) => {
+              this.lessons = data;
+            });
           },
           (error) => {
-            this.showSnackbarAction('unable to add new lesson', 'OK');
+            this.showSnackbarAction(error, 'OK');
           }
         );
       } else {
@@ -363,14 +420,18 @@ export class CourseComponent implements OnInit {
     const dialogRef = this.dialog.open(PopupComponent, { data });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.lessonService.deleteLesson(lessonId).subscribe();
+        this.lessonService.deleteLesson(lessonId).subscribe(() => {
+          this.lessonService.getLessons(this.topicId).subscribe((data) => {
+            this.lessons = data;
+          });
+        });
         this.showSnackbarAction('lesson is deleted', 'OK');
-        this.showLesson = false;
       } else {
         return;
       }
     });
   }
+  //exam functions
   addExam() {
     const data: FormData = {
       title: 'Add Exam',
@@ -385,11 +446,16 @@ export class CourseComponent implements OnInit {
       if (result) {
         this.examService.addExam(result).subscribe(
           (result) => {
-            this.showSnackbarAction('exam successfully added', 'OK');
-            this.showLesson = false;
+            this.examService.getExams(this.courseId).subscribe((data) => {
+              this.examQuestions = data;
+            });
+            this.showSnackbarAction(result.message, 'OK');
           },
           (error) => {
-            this.showSnackbarAction('unable to add new exam', 'OK');
+            this.showSnackbarAction(
+              'unable to add exam for the specified date',
+              'OK'
+            );
           }
         );
       } else {
@@ -407,85 +473,12 @@ export class CourseComponent implements OnInit {
     const dialogRef = this.dialog.open(PopupComponent, { data });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.examService.deleteExam(examId).subscribe();
-        this.showSnackbarAction('lesson is deleted', 'OK');
-        this.showExam = false;
-      } else {
-        return;
-      }
-    });
-  }
-  addAssignment() {
-    const data: FormData = {
-      title: 'Upload Assignment Form',
-      courseId: this.courseId,
-      type: 1,
-      fileIncluded: true,
-      positiveButton: 'Upload',
-      negativeButton: 'Cancel',
-    };
-    const dialogRef = this.dialog.open(FormComponent, { data });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.assignmentService.postAssignment(result).subscribe(
-          (result) => {
-            this.showSnackbarAction('assignment successfully added', 'OK');
-            this.showAssignment = false;
-          },
-          (error) => {
-            this.showSnackbarAction('unable to add new assignment', 'OK');
-            this.showAssignment = false;
-          }
-        );
-      } else {
-        return;
-      }
-    });
-  }
-  deleteAssignment(assignmentId: string) {
-    const data: PopupData = {
-      title: 'Delete Assignment',
-      content: ['Are you sure to delete the assignment'],
-      positiveButton: 'Yes',
-      negativeButton: 'No',
-    };
-    const dialogRef = this.dialog.open(PopupComponent, { data });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.assignmentService
-          .deleteAssignment(assignmentId)
-          .subscribe((result) => {
-            this.showSnackbarAction('assignment is deleted', 'OK');
-            this.showAssignment = false;
+        this.examService.deleteExam(examId).subscribe(() => {
+          this.examService.getExams(this.courseId).subscribe((data) => {
+            this.examQuestions = data;
           });
-      } else {
-        return;
-      }
-    });
-  }
-  displayAssignmentSolution(assignmentId: string) {
-    const data: FormData = {
-      title: 'choose Student',
-      type: 4,
-      courseId: this.courseId,
-      fileIncluded: false,
-      positiveButton: 'submit',
-      negativeButton: 'Cancel',
-    };
-    const dialogRef = this.dialog.open(FormComponent, { data });
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        this.assignmentSolutionService
-          .getAssignmentSolutionById(assignmentId)
-          .subscribe((solutions) => {
-            solutions.forEach((solution) => {
-              if (solution.uploader == result) {
-                this.showAssignment = false;
-                this.showAssignmentSolution = true;
-                this.assignmentSolution = solution;
-              }
-            });
-          });
+        });
+        this.showSnackbarAction('exam is deleted', 'OK');
       } else {
         return;
       }
@@ -511,6 +504,106 @@ export class CourseComponent implements OnInit {
             this.examSolution = solution;
           });
       } else {
+        return;
+      }
+    });
+  }
+  //assignment functions
+  addAssignment() {
+    const data: FormData = {
+      title: 'Upload Assignment Form',
+      courseId: this.courseId,
+      type: 1,
+      fileIncluded: true,
+      positiveButton: 'Upload',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.assignmentService.postAssignment(result).subscribe(
+          (result) => {
+            this.assignmentService
+              .getAssignments(this.courseId)
+              .subscribe((data) => {
+                this.assignments = data;
+              });
+            this.showSnackbarAction('assignment successfully added', 'OK');
+          },
+          (error) => {
+            this.assignmentService
+              .getAssignments(this.courseId)
+              .subscribe((data) => {
+                this.assignments = data;
+              });
+            this.showSnackbarAction('unable to add new assignment', 'OK');
+          }
+        );
+      } else {
+        return;
+      }
+    });
+  }
+  deleteAssignment(assignmentId: string) {
+    const data: PopupData = {
+      title: 'Delete Assignment',
+      content: ['Are you sure to delete the assignment'],
+      positiveButton: 'Yes',
+      negativeButton: 'No',
+    };
+    const dialogRef = this.dialog.open(PopupComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.assignmentService
+          .deleteAssignment(assignmentId)
+          .subscribe((result) => {
+            this.showSnackbarAction('assignment is deleted', 'OK');
+            this.assignmentService
+              .getAssignments(this.courseId)
+              .subscribe((data) => {
+                this.assignments = data;
+              });
+          });
+      } else {
+        return;
+      }
+    });
+  }
+  //assignment solution
+  displayAssignmentSolution(assignmentId: string) {
+    this.assignmentSolution = undefined;
+    const data: FormData = {
+      title: 'choose Student',
+      type: 4,
+      courseId: this.courseId,
+      fileIncluded: false,
+      positiveButton: 'submit',
+      negativeButton: 'Cancel',
+    };
+    const dialogRef = this.dialog.open(FormComponent, { data });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.assignmentSolutionService
+          .getAssignmentSolutionById(assignmentId)
+          .subscribe((solutions) => {
+            solutions.forEach((solution) => {
+              if (solution.uploader == result) {
+                this.showAssignment = false;
+                this.showAssignmentSolution = true;
+                this.assignmentSolution = solution;
+              }
+            });
+            if (!this.assignmentSolution)
+              this.showSnackbarAction(
+                'this student have not submitted any solution yet',
+                'OK'
+              );
+          });
+      } else {
+        this.showSnackbarAction(
+          'this student have not submitted any solution yet',
+          'OK'
+        );
         return;
       }
     });

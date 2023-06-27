@@ -14,6 +14,8 @@ import { Lesson } from 'src/app/models/lesson';
 import { Topic } from 'src/app/models/topic';
 import { UserService } from '../services/user.service';
 import { User } from 'src/app/models/user';
+import * as CryptoJS from 'crypto-js';
+import { environment } from 'src/environments/environment';
 
 export interface FormData {
   title: string;
@@ -39,6 +41,7 @@ export class FormComponent implements OnInit {
   assignmentSolution?: AssignmentSolution;
   courseMaterial?: CourseMaterial;
   assignment?: Assignments;
+  email?: string;
 
   examName?: string;
   startDateTime?: string;
@@ -54,13 +57,22 @@ export class FormComponent implements OnInit {
     private userService: UserService
   ) {}
   ngOnInit(): void {
-    if (this.data.type == 4) {
-      this.userService.getByCourse(this.data.courseId!).subscribe((result) => {
-        this.users = result;
-      });
+    if (sessionStorage.getItem('token')) {
+      const encryptedEmail = sessionStorage.getItem('token');
+      const decryptedEmail = CryptoJS.AES.decrypt(
+        encryptedEmail!.toString(),
+        environment.jwtSecret
+      ).toString(CryptoJS.enc.Utf8);
+      this.email = decryptedEmail;
+      if (this.data.type == 4) {
+        this.userService
+          .getByCourse(this.data.courseId!)
+          .subscribe((result) => {
+            this.users = result;
+          });
+      }
     }
   }
-
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
   }
@@ -68,7 +80,7 @@ export class FormComponent implements OnInit {
     if (this.data.type == null) {
       this.assignmentSolution = new AssignmentSolution(
         this.selectedFile!,
-        sessionStorage.getItem('email')!,
+        this.email!,
         this.description!,
         this.assignmentId!
       );
@@ -76,7 +88,7 @@ export class FormComponent implements OnInit {
     } else if (this.data.type == 0) {
       this.courseMaterial = new CourseMaterial(
         this.selectedFile!,
-        sessionStorage.getItem('email')!,
+        this.email!,
         this.description!,
         this.data.courseId!
       );
@@ -84,7 +96,7 @@ export class FormComponent implements OnInit {
     } else if (this.data.type == 1) {
       this.assignment = new Assignments(
         this.selectedFile!,
-        sessionStorage.getItem('email')!,
+        this.email!,
         this.description!,
         this.data.courseId!
       );
@@ -105,9 +117,9 @@ export class FormComponent implements OnInit {
       exam.weight = this.examWeight!;
       exam.duration = this.examDuration!;
       exam.courseId = this.data.courseId!;
-      exam.creator = sessionStorage.getItem('email')!;
-      exam.startTime = formattedDate;
-
+      exam.creator = this.email!;
+      exam.startTime = new Date(formattedDate);
+      exam.startTime.setHours(exam.startTime.getHours() + 3);
       this.dialogRef.close(exam);
     } else if (this.data.type == 4) {
       this.dialogRef.close(this.studentEmail);

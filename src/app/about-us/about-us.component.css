@@ -5,156 +5,62 @@
     background-attachment: fixed;
     background-repeat: no-repeat;
 }
-img.logoimg {
-    position: absolute;
-    top: 2%;
-    left: 1%;
-    width: 4%;
-    border-radius: 6%;
+.navigationBar {
+    background-color: white;
 }
 
-.navb {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    position: absolute;
-    margin-left: 900px;
-    margin-top: -160px;
+a {
+    color: black;
+    text-transform: capitalize;
 }
 
-.navv {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    font-family: Arial, Helvetica, sans-serif;
-    float: right;
+li a:hover {
+    color: #0077b6;
+    transform: translateY(-5px);
 }
 
-.navv:hover {
-    background-color: lightgrey;
-    border-radius: 50px;
-    color: #0077B6;
+ul {
+    margin-right: 50px;
 }
 
-.logout {
-    width: 100px;
-    margin: -10px 10px;
-    padding: 16px 16px;
-    border: 2px solid white;
-    border-radius: 50px;
-    background-color: transparent;
-    color: white;
-    font-weight: bold;
-    box-shadow: inset 0 0 0 rgba(252, 85, 85, 0.5);
-    transition: 0.6s ease-in-out;
-    cursor: pointer;
+.left-side {
+    display: flex;
+    margin-left: 5px;
 }
 
-.logout:hover {
-    box-shadow: inset 200px 0 0 rgba(39, 235, 235, 0.5);
-}
-
-.AOL {
-    color: white;
-    position: absolute;
-    margin-left: 70px;
-    margin-top: 20px;
-    font-size: 30px;
-    font-family: 'Times New Roman', Times, serif;
+.aau-logo {
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    margin-top: 5px;
 }
 
 .slogan {
-    position: absolute;
-    margin-left: 70px;
-    margin-top: 50px;
-    font-size: 20px;
-    color: white;
-    font-weight: bold;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.navbar {
-    padding: 40px;
-    font-size: 30px;
-    background-color: rgba(3, 70, 182, 0.5);
-    color: white;
-    position: static;
-}
-
-.aboutus {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, Helvetica, sans-serif;
-    font-weight: bold;
-    color: white;
-    margin-top: 50px;
+    flex-direction: column;
 }
 
-
-.box1 {
-    position: absolute;
-    top: 60%;
-    left: 10%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 500px;
-    width: 950px;
-    background-color: rgba(255, 255, 255, 0.65);
-    margin-top: -150px;
-    margin-left: 50px;
+.main {
+    color: #0077b6;
 }
 
-.box2 {
-    position: absolute;
-    top: 75%;
-    left: 10%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-left: 30px;
-    margin-top: 800px;
-    height: 400px;
-    width: 450px;
-    background-color: rgba(255, 255, 255, 0.65);
+.secondary {
+    color: black;
+    font-size: large;
 }
-
-.box3 {
-    position: absolute;
-    top: 100%;
-    left: 10%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-left: 600px;
-    margin-top: 900px;
-    height: 500px;
-    width: 450px;
-    background-color: rgba(255, 255, 255, 0.65);
+.box1{
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgba(255, 255, 255,0.8);
+    border-radius: 2px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    transition: box-shadow .25s;
 }
-
-.box4 {
-    position: absolute;
-    top: 90%;
-    left: 10%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin-left: 30px;
-    margin-top: 1300px;
-    height: 400px;
-    width: 450px;
-    background-color: rgba(255, 255, 255, 0.65);
-}
-
 .flex {
     display: flex;
     height: 30rem;
     grid-gap: 1rem;
-    margin-top: 650px;
+    margin-top: 100px;
 }
 
 .flex>div {
@@ -169,86 +75,28 @@ img.logoimg {
 .flex>div:hover {
     flex: 4;
 }
-
-.MOD {
-    font-weight: bold;
-    font-size: 30px;
-    color: white;
-    margin-top: 1000px;
-    margin-left: 530px;
-    display: block;
-    top: 105%;
+.information{
+    margin-top: 100px;
+    display: flex;
+    justify-content: space-around;
 }
-
-.box5 {
-    position: absolute;
-    top: 60%;
-    left: 10%;
+.information>div{
+    background-color: rgba(255, 255, 255, 0.8);;
+    margin-right: 20px;
     border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    height: 200px;
-    width: 400px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin-top: 1800px;
-    margin-left: 50px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+        transition: box-shadow .25s;
 }
-
-.box6 {
-    position: absolute;
-    top: 60%;
-    left: 10%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    height: 200px;
-    width: 400px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin-top: 2100px;
-    margin-left: 50px;
+.box{
+    display: grid;
+    place-items: center;
+    color: rgba(255, 255, 255, 0.8);;
+    
 }
-
-.box7 {
-    position: absolute;
-    top: 60%;
-    left: 10%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    height: 200px;
-    width: 400px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin-top: 1800px;
-    margin-left: 600px;
+.devimg{
+    width: 75%;
+    height: 100%;
 }
-
-.box8 {
-    position: absolute;
-    top: 60%;
-    left: 10%;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0.5, 0, 0.5), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    height: 200px;
-    width: 400px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin-top: 2100px;
-    margin-left: 600px;
-}
-
-.devimg {
-    height: 200px;
-    width: 150px;
-}
-
-.csgrad {
-    margin-left: 200px;
-}
-
-.devname {
-    font-weight: bold;
-    font-size: 20px;
-    color: black;
-    margin-top: -170px;
-    margin-left: 200px;
-}
-
 footer {
     position: static;
     width: 100%;
@@ -261,7 +109,7 @@ footer {
     color: blanchedalmond;
     padding-top: 40px;
     bottom: 0;
-    margin-top: 300px;
+    margin-top: 50px;
     margin-bottom: 0;
     padding-bottom: 20px;
 }

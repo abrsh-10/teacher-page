@@ -22,7 +22,7 @@ export class ExamService extends DataService<any> {
     const url = `${this.getUrl()}/course-id`;
     return this.getById(url, id);
   }
-  addExam(exam: Exam): Observable<Exam> {
+  addExam(exam: Exam): Observable<any> {
     const url = `${this.getUrl()}`;
     return this.add(url, exam);
   }

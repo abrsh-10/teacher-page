@@ -1,18 +1,37 @@
 <div class="body">
-  <img class="logoimg" src="../../assets/images/aaulogo.png" alt="aau logo" />
-  <h3 class="AOL">AAU online learning</h3>
-  <h5 class="slogan">
-    Seek wisdom, Elevate your intellect and Serve humanity!
-  </h5>
-  <nav class="navbar"></nav>
-  <h1 class="aboutus">About US</h1>
-  <ul class="navb">
-    <li class="navv"><button class="logout">Logout</button></li>
-    <li class="navv"><a href="contact.html">Contact</a></li>
-    <li class="navv"><a href="course list.html">Courses</a></li>
-    <li class="navv"><a href="student1.html">Home</a></li>
-  </ul>
-  <div class="box1">
+  <div class="navigationBar">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-fluid">
+        <div class="left-side">
+          <div>
+            <img
+              src="assets/images/aaulogo.png"
+              alt="AAU logo"
+              class="aau-logo"
+            />
+          </div>
+          <div class="slogan">
+            <h2 class="main mt-3">AAU online learning</h2>
+            <h4 class="secondary">
+              Seek wisdom, Elevate your intellect and Serve humanity!
+            </h4>
+          </div>
+        </div>
+        <ul class="navbar-nav mr-3" routerLinkActive="active">
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="">courses</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/contact">Contact</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <div class="box1 col-sm-12 col-lg-8">
     <P
       style="
         font-weight: bold;
@@ -66,181 +85,158 @@
     <div style="background-image: url('../../assets/images/aau1.jpg')"></div>
     <div style="background-image: url('../../assets/images/aau2.jpg')"></div>
   </div>
+  <div class="information">
+    <div class="box2 col-lg-4 col-12">
+      <p
+        style="
+          font-weight: bold;
+          font-size: 30px;
+          color: black;
+          margin-top: 40px;
+          margin-left: 50px;
+        "
+      >
+        Colleges
+      </p>
+      <p
+        style="
+          color: black;
+          margin-top: 40px;
+          padding: 20px 50px;
+          font-size: 15px;
+          font-family: sans-serif;
+        "
+      >
+        College of Social Sciences<br />
+        College of Humanities, Language Studies, Journalism and communication<br />
+        College of Development Studies<br />
+        College of Business and Economics<br />
+        College of Law and Governance Studies<br />
+        College of Education and Behavioral Studies<br />
+        College of Natural and Computational Sciences<br />
+        Skunder Boghossian College of Performing and Visual Arts<br />
+        College of Veterinary Medicine and Agriculture<br />
+        College of Health Sciences
+      </p>
+    </div>
 
-  <div class="box2">
-    <p
-      style="
-        font-weight: bold;
-        font-size: 30px;
-        color: black;
-        margin-top: 40px;
-        margin-left: 50px;
-      "
-    >
-      Colleges
-    </p>
-    <p
-      style="
-        color: black;
-        margin-top: 40px;
-        padding: 20px 50px;
-        font-size: 15px;
-        font-family: sans-serif;
-      "
-    >
-      College of Social Sciences<br />
-      College of Humanities, Language Studies, Journalism and communication<br />
-      College of Development Studies<br />
-      College of Business and Economics<br />
-      College of Law and Governance Studies<br />
-      College of Education and Behavioral Studies<br />
-      College of Natural and Computational Sciences<br />
-      Skunder Boghossian College of Performing and Visual Arts<br />
-      College of Veterinary Medicine and Agriculture<br />
-      College of Health Sciences
-    </p>
+    <div class="box3 col-lg-4 col-12">
+      <p
+        style="
+          font-weight: bold;
+          font-size: 30px;
+          color: black;
+          margin-top: 40px;
+          margin-left: 50px;
+        "
+      >
+        Research and Teaching Institutes
+      </p>
+      <p
+        style="
+          color: black;
+          padding: 20px 50px;
+          font-size: 15px;
+          font-family: sans-serif;
+        "
+      >
+        1. Academy of Ethiopian Languages and Cultures<br />
+        2. Addis Ababa Institute of Technology<br />
+        3. Aklilu Lemma Institute of Pathobiology<br />
+        4. Ethiopian Institute of Architecture, Building Construction and City
+        Development<br />
+        5. Ethiopian Institute of Water Resources<br />
+        6. Institute of Biotechnology<br />
+        7. Institute of Educational Research<br />
+        8. Institute of Ethiopian Studies<br />
+        9. Institute of Geophysics, Space Science and Astronomy<br />
+        10. Institute of Peace and Security Studies<br />
+        11. Academy of Ethiopian Languages and Cultures<br />
+        12. Horn of Africa Regional Center and Environment Network
+      </p>
+    </div>
+
+    <div class="box4 col-lg-4 col-12">
+      <p
+        style="
+          font-weight: bold;
+          font-size: 30px;
+          color: black;
+          margin-top: 40px;
+          margin-left: 50px;
+        "
+      >
+        Schools
+      </p>
+      <p
+        style="
+          color: black;
+          padding: 20px 50px;
+          font-size: 15px;
+          font-family: sans-serif;
+        "
+      >
+        1. Alle School of Fine Arts and Design<br />
+        2. School of Allied Health Sciences<br />
+        3. School of Commerce<br />
+        4. School of Earth and Planetary Sciences<br />
+        5. School of Information Science<br />
+        6. School of Journalism and Communications<br />
+        7. School of Medicine<br />
+        8. School of Pharmacy<br />
+        9. School of Public Health<br />
+        10. School of Social Work<br />
+        11. Yared School of Music<br />
+        12. Yoftahe Nigussie School of Theatrical Arts
+      </p>
+    </div>
   </div>
+  <P class="text-center text-white h1 pt-5 pb-3">Meet Our Developers</P>
+  <div class="developers row">
+    <div class="box col-lg-3 col-md-6 col-sm-12">
+      <img src="../../assets/images/m.jpg" class="devimg" />
+      <P class="devname">Abrham Sisay</P>
+      <p class="csgrad">2015 AAU CS graduate.</p>
+      <div
+        class="col-lg-3 item social"
+        style="font-size: 30px; margin-left: 200px"
+      >
+        <a href="#"><i class="icon ion-social-facebook"></i></a>
+        <a href="#"><i class="icon ion-social-twitter"></i></a>
+        <a href="#"><i class="icon ion-social-instagram"></i></a>
+      </div>
+    </div>
 
-  <div class="box3">
-    <p
-      style="
-        font-weight: bold;
-        font-size: 30px;
-        color: black;
-        margin-top: 40px;
-        margin-left: 50px;
-      "
-    >
-      Research and Teaching Institutes
-    </p>
-    <p
-      style="
-        color: black;
-        padding: 20px 50px;
-        font-size: 15px;
-        font-family: sans-serif;
-      "
-    >
-      1. Academy of Ethiopian Languages and Cultures<br />
-      2. Addis Ababa Institute of Technology<br />
-      3. Aklilu Lemma Institute of Pathobiology<br />
-      4. Ethiopian Institute of Architecture, Building Construction and City
-      Development<br />
-      5. Ethiopian Institute of Water Resources<br />
-      6. Institute of Biotechnology<br />
-      7. Institute of Educational Research<br />
-      8. Institute of Ethiopian Studies<br />
-      9. Institute of Geophysics, Space Science and Astronomy<br />
-      10. Institute of Peace and Security Studies<br />
-      11. Academy of Ethiopian Languages and Cultures<br />
-      12. Horn of Africa Regional Center and Environment Network
-    </p>
-  </div>
+    <div class="box col-lg-3 col-md-6 col-sm-12">
+      <img src="../../assets/images/f.jpeg" class="devimg" />
+      <P class="devname">Dagmawit Dejene</P>
+      <p class="csgrad">2015 AAU CS graduate.</p>
+    </div>
 
-  <div class="box4">
-    <p
-      style="
-        font-weight: bold;
-        font-size: 30px;
-        color: black;
-        margin-top: 40px;
-        margin-left: 50px;
-      "
-    >
-      Schools
-    </p>
-    <p
-      style="
-        color: black;
-        padding: 20px 50px;
-        font-size: 15px;
-        font-family: sans-serif;
-      "
-    >
-      1. Alle School of Fine Arts and Design<br />
-      2. School of Allied Health Sciences<br />
-      3. School of Commerce<br />
-      4. School of Earth and Planetary Sciences<br />
-      5. School of Information Science<br />
-      6. School of Journalism and Communications<br />
-      7. School of Medicine<br />
-      8. School of Pharmacy<br />
-      9. School of Public Health<br />
-      10. School of Social Work<br />
-      11. Yared School of Music<br />
-      12. Yoftahe Nigussie School of Theatrical Arts
-    </p>
-  </div>
+    <div class="box col-lg-3 col-md-6 col-sm-12">
+      <img src="../../assets/images/f.jpeg" class="devimg" />
+      <P class="devname">Lidiya Yohannes</P>
+      <p class="csgrad">2015 AAU CS graduate.</p>
+    </div>
 
-  <P class="MOD">Meet Our Developers</P>
-
-  <div class="box5">
-    <img src="../../assets/images/m.jpg" class="devimg" />
-    <P class="devname">Abrham Sisay</P>
-    <p class="csgrad">2015 AAU CS graduate.</p>
-    <div
-      class="col-lg-3 item social"
-      style="font-size: 30px; margin-left: 200px"
-    >
-      <a href="#"><i class="icon ion-social-facebook"></i></a>
-      <a href="#"><i class="icon ion-social-twitter"></i></a>
-      <a href="#"><i class="icon ion-social-instagram"></i></a>
+    <div class="box col-lg-3 col-md-6 col-sm-12">
+      <img src="../../assets/images/m.jpg" class="devimg" />
+      <P class="devname">Gedion Tadesse</P>
+      <p class="csgrad">2015 AAU CS graduate.</p>
     </div>
   </div>
 
-  <div class="box6">
-    <img src="../../assets/images/f.jpeg" class="devimg" />
-    <P class="devname">Dagmawit Dejene</P>
-    <p class="csgrad">2015 AAU CS graduate.</p>
-    <div
-      class="col-lg-3 item social"
-      style="font-size: 30px; margin-left: 200px"
-    >
-      <a href="#"><i class="icon ion-social-facebook"></i></a>
-      <a href="#"><i class="icon ion-social-twitter"></i></a>
-      <a href="#"><i class="icon ion-social-instagram"></i></a>
-    </div>
-  </div>
-
-  <div class="box7">
-    <img src="../../assets/images/f.jpeg" class="devimg" />
-    <P class="devname">Lidiya Yohannes</P>
-    <p class="csgrad">2015 AAU CS graduate.</p>
-    <div
-      class="col-lg-3 item social"
-      style="font-size: 30px; margin-left: 200px"
-    >
-      <a href="#"><i class="icon ion-social-facebook"></i></a>
-      <a href="#"><i class="icon ion-social-twitter"></i></a>
-      <a href="#"><i class="icon ion-social-instagram"></i></a>
-    </div>
-  </div>
-
-  <div class="box8">
-    <img src="../../assets/images/m.jpg" class="devimg" />
-    <P class="devname">Gedion Tadesse</P>
-    <p class="csgrad">2015 AAU CS graduate.</p>
-    <div
-      class="col-lg-3 item social"
-      style="font-size: 30px; margin-left: 200px"
-    >
-      <a href="#"><i class="icon ion-social-facebook"></i></a>
-      <a href="#"><i class="icon ion-social-twitter"></i></a>
-      <a href="#"><i class="icon ion-social-instagram"></i></a>
-    </div>
-  </div>
-
-  <div class="footer-clean" style="margin-top: 800px">
+  <div class="footer-clean">
     <footer>
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-sm-4 col-md-3 item">
             <h3>Quick Links</h3>
             <ul>
-              <li><a href="#">Home</a></li>
-              <li><a href="#">Users</a></li>
-              <li><a href="#">Feedback</a></li>
-              <li><a href="#">FAQ</a></li>
+              <li><a routerLink="">Home</a></li>
+              <li><a routerLink="">courses</a></li>
+              <li><a routerLink="contact">Feedback</a></li>
+              <li><a routerLink="contact">FAQ</a></li>
             </ul>
           </div>
 

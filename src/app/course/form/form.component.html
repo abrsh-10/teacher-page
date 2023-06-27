@@ -16,20 +16,20 @@
     <div *ngIf="data.type == 2">
       <div class="form-control">
         <div class="mb-2">
-          <label><b>Topic Title</b></label>
+          <label><b>lesson Title</b></label>
         </div>
         <input
           type="text"
           name="title"
           [(ngModel)]="lessonTitle"
-          id="topicTitle"
+          id="lessonTitle"
           placeholder="Add lesson title"
           required
         />
       </div>
       <div class="form-control">
         <div class="mb-2">
-          <label><b>Topic video Id</b></label>
+          <label><b>lesson video Id</b></label>
         </div>
         <input
           type="text"
@@ -77,6 +77,8 @@
           [(ngModel)]="examWeight"
           id="weight"
           placeholder="enter exam's weight"
+          min="1"
+          max="100"
           required
         />
       </div>
@@ -90,6 +92,7 @@
           [(ngModel)]="examDuration"
           id="duration"
           placeholder="enter exam's duration(minutes)"
+          min="10"
           required
         />
       </div>
